@@ -55,6 +55,14 @@ Changelog = "https://github.com/loonghao/shotgrid-query/blob/main/CHANGELOG.md"
 [tool.hatch.build.targets.wheel]
 packages = ["src/shotgrid_query"]
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+]
+
 [tool.ruff]
 line-length = 120
 target-version = "py310"
