@@ -2,8 +2,6 @@
 
 import datetime
 
-import pytest
-
 from shotgrid_query.data_types import (
     ShotGridTypes,
     convert_from_shotgrid_type,

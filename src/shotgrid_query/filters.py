@@ -770,8 +770,8 @@ def create_date_filter(field: str, operator: str, date_value: str | datetime | t
         # Handle datetime and date objects
         date_value = date_value.strftime("%Y-%m-%d")
     # Handle timedelta (relative to today)
-    elif hasattr(date_value, "days") and hasattr(date_value, "seconds"):
-        # This is likely a timedelta
+    elif isinstance(date_value, timedelta):
+        # This is a timedelta
         date_value = (datetime.now() + date_value).strftime("%Y-%m-%d")
 
     return (field, operator, date_value)

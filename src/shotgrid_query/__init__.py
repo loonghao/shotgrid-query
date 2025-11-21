@@ -13,6 +13,8 @@ Example:
 __version__ = "0.1.0"
 
 # Import core components
+# Import constants for public API
+from shotgrid_query import constants
 from shotgrid_query.adapters import BaseAdapter
 from shotgrid_query.custom_types import (
     ASSET_ENTITY_TYPE,
@@ -74,9 +76,6 @@ from shotgrid_query.models import (
 )
 from shotgrid_query.query import Query, QueryBuilder
 from shotgrid_query.schema_validator import SchemaCache, ValidationError
-
-# Import constants for public API
-from shotgrid_query import constants
 
 # Try to import optional adapters
 try:

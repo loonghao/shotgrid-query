@@ -1,6 +1,5 @@
 """Tests for FieldMapper."""
 
-import pytest
 
 from shotgrid_query.field_mapper import FieldMapper
 

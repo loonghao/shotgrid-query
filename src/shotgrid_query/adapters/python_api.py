@@ -84,7 +84,8 @@ class PythonAPIAdapter(BaseAdapter):
             find_kwargs,
         )
 
-        return self._sg.find(entity_type, filters, fields, **find_kwargs)
+        result: list[dict[str, Any]] = self._sg.find(entity_type, filters, fields, **find_kwargs)
+        return result
 
     def find_one(
         self,
@@ -133,7 +134,8 @@ class PythonAPIAdapter(BaseAdapter):
             find_kwargs,
         )
 
-        return self._sg.find_one(entity_type, filters, fields, **find_kwargs)
+        result: dict[str, Any] | None = self._sg.find_one(entity_type, filters, fields, **find_kwargs)
+        return result
 
     def create(
         self,
@@ -153,7 +155,8 @@ class PythonAPIAdapter(BaseAdapter):
         """
         logger.debug("Creating entity: entity_type=%s, data=%s, return_fields=%s", entity_type, data, return_fields)
 
-        return self._sg.create(entity_type, data, return_fields)
+        result: dict[str, Any] = self._sg.create(entity_type, data, return_fields)
+        return result
 
     def update(
         self,
@@ -181,7 +184,8 @@ class PythonAPIAdapter(BaseAdapter):
             return_fields,
         )
 
-        return self._sg.update(entity_type, entity_id, data, return_fields)
+        result: dict[str, Any] = self._sg.update(entity_type, entity_id, data, return_fields)
+        return result
 
     def delete(self, entity_type: EntityType, entity_id: int) -> bool:
         """Delete an entity using shotgun_api3.
@@ -210,7 +214,8 @@ class PythonAPIAdapter(BaseAdapter):
         """
         logger.debug("Reading field schema: entity_type=%s, field_name=%s", entity_type, field_name)
 
-        return self._sg.schema_field_read(entity_type, field_name)
+        result: dict[str, Any] = self._sg.schema_field_read(entity_type, field_name)
+        return result
 
     def schema_entity_read(self) -> dict[str, Any]:
         """Read schema information for all entity types using shotgun_api3.
@@ -220,7 +225,8 @@ class PythonAPIAdapter(BaseAdapter):
         """
         logger.debug("Reading entity schema")
 
-        return self._sg.schema_entity_read()
+        result: dict[str, Any] = self._sg.schema_entity_read()
+        return result
 
     @property
     def sg(self) -> Any:

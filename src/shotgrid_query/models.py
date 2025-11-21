@@ -105,7 +105,7 @@ class Filter(BaseModel):
     def from_tuple(cls, filter_tuple: tuple[str, str, Any]) -> "Filter":
         """Create from tuple format."""
         field, operator, value = filter_tuple
-        return cls(field=field, operator=operator, value=value)
+        return cls(field=field, operator=FilterOperator(operator), value=value)
 
 
 class FilterRequest(BaseModel):
@@ -132,7 +132,10 @@ class FilterRequest(BaseModel):
     @classmethod
     def from_dict(cls, filter_dict: dict[str, Any]) -> "FilterRequest":
         """Create from dictionary."""
-        return cls(field=filter_dict.get("field"), operator=filter_dict.get("operator"), value=filter_dict.get("value"))
+        field: str = filter_dict.get("field", "")
+        operator: str = filter_dict.get("operator", "")
+        value: Any = filter_dict.get("value")
+        return cls(field=field, operator=operator, value=value)
 
 
 class TimeFilter(BaseModel):

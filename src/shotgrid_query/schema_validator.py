@@ -9,7 +9,6 @@ import time
 from typing import Any
 
 from shotgrid_query.constants import (
-    DATA_TYPE_CHECKBOX,
     DATA_TYPE_DATE,
     DATA_TYPE_DATE_TIME,
     DATA_TYPE_ENTITY,
@@ -65,7 +64,7 @@ class SchemaCache:
 
         # Fetch fresh schema
         logger.debug("Fetching schema for %s from ShotGrid", entity_type)
-        schema = sg.schema_field_read(entity_type)
+        schema: dict[str, Any] = sg.schema_field_read(entity_type)
         cls._cache[cache_key] = schema
         cls._timestamps[cache_key] = time.time()
 

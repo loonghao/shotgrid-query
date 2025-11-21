@@ -123,7 +123,7 @@ class FieldMapper:
             # For entity fields, the data_type is a dict with 'value' key
             if data_type.get("value") == "entity":
                 # Get the valid types for this field
-                valid_types = field_info.get("properties", {}).get("valid_types", {}).get("value", [])
+                valid_types: list[str] = field_info.get("properties", {}).get("valid_types", {}).get("value", [])
                 if valid_types and len(valid_types) == 1:
                     return valid_types[0]
                 elif valid_types:
