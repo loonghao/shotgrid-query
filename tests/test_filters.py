@@ -86,6 +86,51 @@ class TestFilterBuilder:
         result = FilterBuilder.in_calendar_day("created_at")
         assert result == ("created_at", "in_calendar_day", None)
 
+    def test_in_calendar_week(self):
+        """Test creating 'in_calendar_week' filter."""
+        result = FilterBuilder.in_calendar_week("created_at")
+        assert result == ("created_at", "in_calendar_week", None)
+
+    def test_in_calendar_month(self):
+        """Test creating 'in_calendar_month' filter."""
+        result = FilterBuilder.in_calendar_month("created_at")
+        assert result == ("created_at", "in_calendar_month", None)
+
+    def test_in_calendar_year(self):
+        """Test creating 'in_calendar_year' filter."""
+        result = FilterBuilder.in_calendar_year("created_at")
+        assert result == ("created_at", "in_calendar_year", None)
+
+    def test_type_is(self):
+        """Test creating 'type_is' filter."""
+        result = FilterBuilder.type_is("entity", "Asset")
+        assert result == ("entity", "type_is", "Asset")
+
+    def test_type_is_not(self):
+        """Test creating 'type_is_not' filter."""
+        result = FilterBuilder.type_is_not("entity", "Asset")
+        assert result == ("entity", "type_is_not", "Asset")
+
+    def test_name_contains(self):
+        """Test creating 'name_contains' filter."""
+        result = FilterBuilder.name_contains("entity", "test")
+        assert result == ("entity", "name_contains", "test")
+
+    def test_name_not_contains(self):
+        """Test creating 'name_not_contains' filter."""
+        result = FilterBuilder.name_not_contains("entity", "test")
+        assert result == ("entity", "name_not_contains", "test")
+
+    def test_name_is(self):
+        """Test creating 'name_is' filter."""
+        result = FilterBuilder.name_is("entity", "Test Asset")
+        assert result == ("entity", "name_is", "Test Asset")
+
+    def test_in_calendar_day(self):
+        """Test creating 'in_calendar_day' filter."""
+        result = FilterBuilder.in_calendar_day("created_at")
+        assert result == ("created_at", "in_calendar_day", None)
+
     def test_type_is(self):
         """Test creating 'type_is' filter."""
         result = FilterBuilder.type_is("entity", "Shot")
