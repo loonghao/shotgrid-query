@@ -9,6 +9,7 @@ from typing import Any
 
 from shotgrid_query.custom_types import EntityType, Filter
 from shotgrid_query.filters import process_filters
+from shotgrid_query.schema_validator import SchemaCache, ValidationError, validate_fields, validate_filters
 
 logger = logging.getLogger(__name__)
 
@@ -27,11 +28,20 @@ class QueryBuilder:
         >>> fields = query.to_fields()
     """
 
-    def __init__(self, entity_type: EntityType):
+    def __init__(
+        self,
+        entity_type: EntityType,
+        schema: dict[str, Any] | None = None,
+        sg: Any | None = None,
+        auto_validate: bool = False,
+    ):
         """Initialize the query builder.
 
         Args:
             entity_type: The ShotGrid entity type to query (e.g., "Shot", "Asset", "Task")
+            schema: Optional pre-loaded schema dictionary for validation
+            sg: Optional ShotGrid connection for fetching schema
+            auto_validate: If True, automatically validate on to_filters/to_fields calls
         """
         self._entity_type = entity_type
         self._filters: list[Filter] = []
@@ -42,6 +52,9 @@ class QueryBuilder:
         self._include_archived_projects: bool = True
         self._additional_filter_presets: list[dict[str, Any]] | None = None
         self._filter_operator: str = "all"  # "all" (AND) or "any" (OR)
+        self._schema = schema
+        self._sg = sg
+        self._auto_validate = auto_validate
 
     def filter(self, **kwargs: Any) -> "QueryBuilder":
         """Add filters to the query using keyword arguments.
@@ -245,31 +258,114 @@ class QueryBuilder:
         self._filter_operator = operator
         return self
 
-    def to_filters(self) -> list[Filter]:
+    def _get_schema(self) -> dict[str, Any]:
+        """Get schema for validation.
+
+        Returns:
+            Schema dictionary, either from cache or by fetching from ShotGrid
+
+        Raises:
+            ValueError: If no schema is available and no ShotGrid connection provided
+        """
+        if self._schema is not None:
+            return self._schema
+
+        if self._sg is not None:
+            # Use SchemaCache to avoid repeated API calls
+            self._schema = SchemaCache.get(self._sg, self._entity_type)
+            return self._schema
+
+        raise ValueError(
+            "No schema available for validation. "
+            "Please provide either 'schema' or 'sg' parameter when creating the Query."
+        )
+
+    def validate(self) -> list[ValidationError]:
+        """Validate the query against schema.
+
+        Returns:
+            List of validation errors (empty if query is valid)
+
+        Example:
+            >>> errors = query.validate()
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(error)
+        """
+        try:
+            schema = self._get_schema()
+        except ValueError as e:
+            return [ValidationError(field="query", message=str(e), suggestion="Provide schema or sg connection")]
+
+        errors: list[ValidationError] = []
+
+        # Validate filters
+        if self._filters:
+            errors.extend(validate_filters(self._filters, schema, self._entity_type))
+
+        # Validate fields
+        if self._fields:
+            errors.extend(validate_fields(self._fields, schema, self._entity_type))
+
+        return errors
+
+    def to_filters(self, verify: bool | None = None) -> list[Filter]:
         """Convert the query to ShotGrid filter format.
+
+        Args:
+            verify: If True, validate filters before returning. If None, use auto_validate setting.
 
         Returns:
             List of filters in tuple format (field, operator, value)
 
+        Raises:
+            ValueError: If verify=True and validation fails
+
         Example:
             >>> filters = query.to_filters()
             >>> # [("code", "is", "SHOT_010"), ...]
+            >>> # With validation
+            >>> filters = query.to_filters(verify=True)
         """
+        should_verify = verify if verify is not None else self._auto_validate
+
+        if should_verify:
+            errors = self.validate()
+            if errors:
+                error_messages = "\n".join(str(error) for error in errors)
+                raise ValueError(f"Query validation failed:\n{error_messages}")
+
         # Process filters to handle special values and time-related filters
         if self._filters:
             return process_filters(self._filters)
         return []
 
-    def to_fields(self) -> list[str]:
+    def to_fields(self, verify: bool | None = None) -> list[str]:
         """Get the list of fields to select.
+
+        Args:
+            verify: If True, validate fields before returning. If None, use auto_validate setting.
 
         Returns:
             List of field names
 
+        Raises:
+            ValueError: If verify=True and validation fails
+
         Example:
             >>> fields = query.to_fields()
             >>> # ["code", "description", "project.Project.name"]
+            >>> # With validation
+            >>> fields = query.to_fields(verify=True)
         """
+        should_verify = verify if verify is not None else self._auto_validate
+
+        if should_verify:
+            errors = self.validate()
+            if errors:
+                error_messages = "\n".join(str(error) for error in errors)
+                raise ValueError(f"Query validation failed:\n{error_messages}")
+
         return self._fields.copy()
 
     def to_dict(self) -> dict[str, Any]:
