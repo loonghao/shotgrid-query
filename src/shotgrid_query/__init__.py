@@ -73,6 +73,10 @@ from shotgrid_query.models import (
     TimeUnit as TimeUnitEnum,
 )
 from shotgrid_query.query import Query, QueryBuilder
+from shotgrid_query.schema_validator import SchemaCache, ValidationError
+
+# Import constants for public API
+from shotgrid_query import constants
 
 # Try to import optional adapters
 try:
@@ -121,6 +125,11 @@ __all__ = [
     "TimeUnit",
     "process_filters",
     "validate_filters",
+    # Constants module
+    "constants",
+    # Schema validation
+    "SchemaCache",
+    "ValidationError",
     "create_date_filter",
     "build_date_filter",
     "combine_filters",
