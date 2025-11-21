@@ -50,4 +50,3 @@ def build(session):
     """Build the package."""
     session.install("build")
     session.run("python", "-m", "build")
-

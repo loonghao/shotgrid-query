@@ -1,6 +1,5 @@
 """Tests for FieldMapper."""
 
-
 from shotgrid_query.field_mapper import FieldMapper
 
 
@@ -156,4 +155,3 @@ class TestFieldMapper:
         mapper = FieldMapper("Shot", schema)
         result = mapper._get_related_entity_type("code")
         assert result is None
-

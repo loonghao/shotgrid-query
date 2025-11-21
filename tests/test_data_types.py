@@ -236,4 +236,3 @@ class TestSchemaFunctions:
         schema = {"Shot": {"fields": {"code": {"data_type": {"value": "text"}}}}}
         result = get_entity_field_types(schema, "Shot", "code")
         assert result == []
-

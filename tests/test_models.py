@@ -169,4 +169,3 @@ class TestTimeFilter:
         """Test that count must be positive."""
         with pytest.raises(ValidationError):
             TimeFilter(field="created_at", operator="in_last", count=0, unit=TimeUnit.DAY)
-
