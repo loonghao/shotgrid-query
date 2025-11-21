@@ -2,9 +2,15 @@
 
 [![PyPI version](https://badge.fury.io/py/shotgrid-query.svg)](https://badge.fury.io/py/shotgrid-query)
 [![Python Versions](https://img.shields.io/pypi/pyversions/shotgrid-query.svg)](https://pypi.org/project/shotgrid-query/)
+[![Downloads](https://static.pepy.tech/badge/shotgrid-query)](https://pepy.tech/project/shotgrid-query)
+[![Downloads/Month](https://static.pepy.tech/badge/shotgrid-query/month)](https://pepy.tech/project/shotgrid-query)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/loonghao/shotgrid-query/workflows/Tests/badge.svg)](https://github.com/loonghao/shotgrid-query/actions)
-[![Coverage](https://codecov.io/gh/loonghao/shotgrid-query/branch/main/graph/badge.svg)](https://codecov.io/gh/loonghao/shotgrid-query)
+[![codecov](https://codecov.io/gh/loonghao/shotgrid-query/branch/main/graph/badge.svg)](https://codecov.io/gh/loonghao/shotgrid-query)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Type checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://github.com/python/mypy)
+[![GitHub stars](https://img.shields.io/github/stars/loonghao/shotgrid-query.svg?style=social&label=Star)](https://github.com/loonghao/shotgrid-query)
+[![GitHub forks](https://img.shields.io/github/forks/loonghao/shotgrid-query.svg?style=social&label=Fork)](https://github.com/loonghao/shotgrid-query/fork)
 
 一个为 ShotGrid/Flow Production Tracking API 设计的 Pythonic 查询构建器和 ORM 风格的抽象层。
 
