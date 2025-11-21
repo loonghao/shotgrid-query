@@ -415,5 +415,3 @@ class TestFilterExamples:
 
         assert "field" in example
         assert "unknown_op" in example
-
-

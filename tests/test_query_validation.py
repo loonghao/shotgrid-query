@@ -176,4 +176,3 @@ class TestQueryBuilderValidation:
         error_fields = [e.field for e in errors]
         assert "invalid_filter" in error_fields
         assert "invalid_field" in error_fields
-

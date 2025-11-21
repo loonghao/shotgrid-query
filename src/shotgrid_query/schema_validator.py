@@ -238,7 +238,10 @@ def validate_filter_value_type(value: Any, field_info: dict[str, Any], operator:
                 if not isinstance(count, int):
                     return False, f"Time filter count must be an integer, got {type(count).__name__}"
                 if unit not in [TIME_UNIT_DAY, TIME_UNIT_WEEK, TIME_UNIT_MONTH, TIME_UNIT_YEAR]:
-                    return False, f"Time filter unit must be one of {TIME_UNIT_DAY}, {TIME_UNIT_WEEK}, {TIME_UNIT_MONTH}, {TIME_UNIT_YEAR}, got {unit}"
+                    return (
+                        False,
+                        f"Time filter unit must be one of {TIME_UNIT_DAY}, {TIME_UNIT_WEEK}, {TIME_UNIT_MONTH}, {TIME_UNIT_YEAR}, got {unit}",
+                    )
             else:
                 return False, "Time filter value must be [count, 'UNIT'] or 'count unit' string"
 
@@ -275,9 +278,7 @@ def validate_field_exists(field: str, schema: dict[str, Any], entity_type: Entit
     return None
 
 
-def validate_filters(
-    filters: list[Filter], schema: dict[str, Any], entity_type: EntityType
-) -> list[ValidationError]:
+def validate_filters(filters: list[Filter], schema: dict[str, Any], entity_type: EntityType) -> list[ValidationError]:
     """Validate a list of filters against schema.
 
     Args:
@@ -368,6 +369,3 @@ def _get_filter_example(field: str, operator: str, field_type: str) -> str:
 
     # Replace {field} and {operator} placeholders
     return example_template.format(field=field, operator=operator)
-
-
-
