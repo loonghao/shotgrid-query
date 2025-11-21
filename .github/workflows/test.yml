@@ -62,9 +62,12 @@ jobs:
       uses: codecov/codecov-action@v5
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
         fail_ci_if_error: false
         verbose: true
+        flags: unittests
+        name: codecov-umbrella
 
   lint:
     name: Lint
