@@ -7,7 +7,7 @@ name = "shotgrid-query"
 version = "0.1.0"
 description = "A Pythonic query builder and ORM-like abstraction layer for ShotGrid/Flow Production Tracking API"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = { file = "LICENSE" }
 authors = [
     { name = "Hal Long", email = "hal.long@outlook.com" }
