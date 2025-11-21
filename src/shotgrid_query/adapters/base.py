@@ -4,7 +4,7 @@ This module defines the base interface that all ShotGrid adapters must implement
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from shotgrid_query.custom_types import EntityType, Filter
 
@@ -20,15 +20,15 @@ class BaseAdapter(ABC):
     def find(
         self,
         entity_type: EntityType,
-        filters: List[Filter],
-        fields: Optional[List[str]] = None,
-        order: Optional[List[Dict[str, str]]] = None,
-        limit: Optional[int] = None,
+        filters: list[Filter],
+        fields: list[str] | None = None,
+        order: list[dict[str, str]] | None = None,
+        limit: int | None = None,
         retired_only: bool = False,
         include_archived_projects: bool = True,
         filter_operator: str = "all",
         **kwargs: Any,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Find entities matching the given criteria.
 
         Args:
@@ -51,13 +51,13 @@ class BaseAdapter(ABC):
     def find_one(
         self,
         entity_type: EntityType,
-        filters: List[Filter],
-        fields: Optional[List[str]] = None,
-        order: Optional[List[Dict[str, str]]] = None,
+        filters: list[Filter],
+        fields: list[str] | None = None,
+        order: list[dict[str, str]] | None = None,
         filter_operator: str = "all",
         retired_only: bool = False,
         **kwargs: Any,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """Find a single entity matching the given criteria.
 
         Args:
@@ -78,9 +78,9 @@ class BaseAdapter(ABC):
     def create(
         self,
         entity_type: EntityType,
-        data: Dict[str, Any],
-        return_fields: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        data: dict[str, Any],
+        return_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Create a new entity.
 
         Args:
@@ -98,9 +98,9 @@ class BaseAdapter(ABC):
         self,
         entity_type: EntityType,
         entity_id: int,
-        data: Dict[str, Any],
-        return_fields: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        data: dict[str, Any],
+        return_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Update an existing entity.
 
         Args:
@@ -128,9 +128,7 @@ class BaseAdapter(ABC):
         pass
 
     @abstractmethod
-    def schema_field_read(
-        self, entity_type: EntityType, field_name: Optional[str] = None
-    ) -> Dict[str, Any]:
+    def schema_field_read(self, entity_type: EntityType, field_name: str | None = None) -> dict[str, Any]:
         """Read schema information for entity fields.
 
         Args:
@@ -143,11 +141,10 @@ class BaseAdapter(ABC):
         pass
 
     @abstractmethod
-    def schema_entity_read(self) -> Dict[str, Any]:
+    def schema_entity_read(self) -> dict[str, Any]:
         """Read schema information for all entity types.
 
         Returns:
             Schema information for all entities
         """
         pass
-

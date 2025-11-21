@@ -4,7 +4,7 @@ This module provides type definitions for ShotGrid API data types.
 """
 
 import datetime
-from typing import Any, Dict, List, Literal, Optional, Tuple, TypedDict, Union
+from typing import Any, Literal, TypedDict
 
 # ShotGrid entity types
 EntityType = str  # Use string type instead of Literal for flexibility
@@ -84,7 +84,7 @@ class EntityRef(TypedDict):
 
     type: str
     id: int
-    name: Optional[str]
+    name: str | None
 
 
 # ShotGrid URL field
@@ -101,29 +101,30 @@ class UrlField(TypedDict):
 class LocalUrlField(UrlField):
     """ShotGrid local file URL field."""
 
-    local_path: Optional[str]
-    local_path_linux: Optional[str]
-    local_path_mac: Optional[str]
-    local_path_windows: Optional[str]
-    local_storage: Dict[str, Any]
+    local_path: str | None
+    local_path_linux: str | None
+    local_path_mac: str | None
+    local_path_windows: str | None
+    local_storage: dict[str, Any]
 
 
 # ShotGrid filter
-Filter = Tuple[str, FilterOperator, Any]
+# Using str instead of FilterOperator for better compatibility
+Filter = tuple[str, str, Any]
 
 # ShotGrid value types
-ShotGridValue = Union[
-    None,
-    bool,
-    int,
-    float,
-    str,
-    datetime.datetime,
-    datetime.date,
-    Dict[str, Any],
-    List[Dict[str, Any]],
-    List[str],
-]
+ShotGridValue = (
+    None
+    | bool
+    | int
+    | float
+    | str
+    | datetime.datetime
+    | datetime.date
+    | dict[str, Any]
+    | list[dict[str, Any]]
+    | list[str]
+)
 
 
 # ShotGrid entity
@@ -132,15 +133,14 @@ class Entity(TypedDict, total=False):
 
     type: str
     id: int
-    name: Optional[str]
-    code: Optional[str]
-    project: Optional[EntityRef]
-    created_at: Optional[datetime.datetime]
-    updated_at: Optional[datetime.datetime]
-    created_by: Optional[EntityRef]
-    updated_by: Optional[EntityRef]
-    sg_status_list: Optional[str]
-    description: Optional[str]
-    image: Optional[str]
-    tags: Optional[List[EntityRef]]
-
+    name: str | None
+    code: str | None
+    project: EntityRef | None
+    created_at: datetime.datetime | None
+    updated_at: datetime.datetime | None
+    created_by: EntityRef | None
+    updated_by: EntityRef | None
+    sg_status_list: str | None
+    description: str | None
+    image: str | None
+    tags: list[EntityRef] | None

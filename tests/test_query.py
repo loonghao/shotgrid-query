@@ -1,9 +1,10 @@
 """Tests for QueryBuilder."""
 
-import pytest
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 
-from shotgrid_query.query import QueryBuilder, Query
+import pytest
+
+from shotgrid_query.query import Query, QueryBuilder
 
 
 class TestQueryBuilder:
@@ -53,20 +54,13 @@ class TestQueryBuilder:
 
     def test_filter_chaining(self):
         """Test chaining multiple filter calls."""
-        query = (
-            QueryBuilder("Shot")
-            .filter(code="SHOT_010")
-            .filter(sg_status_list="ip")
-        )
+        query = QueryBuilder("Shot").filter(code="SHOT_010").filter(sg_status_list="ip")
         filters = query.to_filters()
         assert len(filters) == 2
 
     def test_filter_raw(self):
         """Test adding raw filters."""
-        query = QueryBuilder("Shot").filter_raw(
-            ("code", "is", "SHOT_010"),
-            ("sg_status_list", "in", ["ip", "fin"])
-        )
+        query = QueryBuilder("Shot").filter_raw(("code", "is", "SHOT_010"), ("sg_status_list", "in", ["ip", "fin"]))
         filters = query.to_filters()
         assert len(filters) == 2
 
@@ -79,11 +73,7 @@ class TestQueryBuilder:
 
     def test_select_chaining(self):
         """Test chaining select calls."""
-        query = (
-            QueryBuilder("Shot")
-            .select("code")
-            .select("description", "sg_status_list")
-        )
+        query = QueryBuilder("Shot").select("code").select("description", "sg_status_list")
         fields = query.to_fields()
         assert len(fields) == 3
 
@@ -167,17 +157,14 @@ class TestQueryBuilder:
         """Test executing query with mock ShotGrid connection."""
         # Create mock ShotGrid connection
         mock_sg = Mock()
-        mock_sg.find = MagicMock(return_value=[
-            {"type": "Shot", "id": 1, "code": "SHOT_010"},
-            {"type": "Shot", "id": 2, "code": "SHOT_020"},
-        ])
-
-        query = (
-            QueryBuilder("Shot")
-            .filter(sg_status_list="ip")
-            .select("code", "description")
-            .limit(10)
+        mock_sg.find = MagicMock(
+            return_value=[
+                {"type": "Shot", "id": 1, "code": "SHOT_010"},
+                {"type": "Shot", "id": 2, "code": "SHOT_020"},
+            ]
         )
+
+        query = QueryBuilder("Shot").filter(sg_status_list="ip").select("code", "description").limit(10)
 
         results = query.execute(mock_sg)
 
@@ -197,9 +184,11 @@ class TestQueryBuilder:
     def test_first(self):
         """Test getting first result."""
         mock_sg = Mock()
-        mock_sg.find = MagicMock(return_value=[
-            {"type": "Shot", "id": 1, "code": "SHOT_010"},
-        ])
+        mock_sg.find = MagicMock(
+            return_value=[
+                {"type": "Shot", "id": 1, "code": "SHOT_010"},
+            ]
+        )
 
         query = QueryBuilder("Shot").filter(code="SHOT_010")
         result = query.first(mock_sg)
@@ -223,12 +212,7 @@ class TestQueryBuilder:
 
     def test_clone(self):
         """Test cloning a query."""
-        original = (
-            QueryBuilder("Shot")
-            .filter(code="SHOT_010")
-            .select("code", "description")
-            .limit(100)
-        )
+        original = QueryBuilder("Shot").filter(code="SHOT_010").select("code", "description").limit(100)
 
         cloned = original.clone()
 
@@ -261,4 +245,3 @@ class TestQueryBuilder:
     def test_query_alias(self):
         """Test that Query is an alias for QueryBuilder."""
         assert Query is QueryBuilder
-

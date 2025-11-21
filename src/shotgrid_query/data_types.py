@@ -5,7 +5,7 @@ making it easier to convert between Python types and ShotGrid types.
 """
 
 import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class ShotGridTypes:
@@ -190,7 +190,7 @@ def convert_from_shotgrid_type(value: Any, sg_type: str) -> Any:
     return value
 
 
-def get_field_type(schema: Dict[str, Any], entity_type: str, field_name: str) -> Optional[str]:
+def get_field_type(schema: dict[str, Any], entity_type: str, field_name: str) -> str | None:
     """Get the ShotGrid data type for a field.
 
     Args:
@@ -216,7 +216,7 @@ def get_field_type(schema: Dict[str, Any], entity_type: str, field_name: str) ->
     return data_type
 
 
-def is_entity_field(schema: Dict[str, Any], entity_type: str, field_name: str) -> bool:
+def is_entity_field(schema: dict[str, Any], entity_type: str, field_name: str) -> bool:
     """Check if a field is an entity field.
 
     Args:
@@ -231,7 +231,7 @@ def is_entity_field(schema: Dict[str, Any], entity_type: str, field_name: str) -
     return field_type == ShotGridTypes.ENTITY
 
 
-def is_multi_entity_field(schema: Dict[str, Any], entity_type: str, field_name: str) -> bool:
+def is_multi_entity_field(schema: dict[str, Any], entity_type: str, field_name: str) -> bool:
     """Check if a field is a multi-entity field.
 
     Args:
@@ -246,7 +246,7 @@ def is_multi_entity_field(schema: Dict[str, Any], entity_type: str, field_name: 
     return field_type == ShotGridTypes.MULTI_ENTITY
 
 
-def get_entity_field_types(schema: Dict[str, Any], entity_type: str, field_name: str) -> List[str]:
+def get_entity_field_types(schema: dict[str, Any], entity_type: str, field_name: str) -> list[str]:
     """Get the valid entity types for an entity field.
 
     Args:
@@ -269,7 +269,7 @@ def get_entity_field_types(schema: Dict[str, Any], entity_type: str, field_name:
     return valid_types
 
 
-def format_entity_value(entity_type: str, entity_id: int) -> Dict[str, Any]:
+def format_entity_value(entity_type: str, entity_id: int) -> dict[str, Any]:
     """Format an entity value for ShotGrid API.
 
     Args:
@@ -282,7 +282,7 @@ def format_entity_value(entity_type: str, entity_id: int) -> Dict[str, Any]:
     return {"type": entity_type, "id": entity_id}
 
 
-def format_multi_entity_value(entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def format_multi_entity_value(entities: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Format a multi-entity value for ShotGrid API.
 
     Args:
@@ -292,4 +292,3 @@ def format_multi_entity_value(entities: List[Dict[str, Any]]) -> List[Dict[str, 
         Formatted list of entity dictionaries
     """
     return [{"type": e["type"], "id": e["id"]} for e in entities if "type" in e and "id" in e]
-

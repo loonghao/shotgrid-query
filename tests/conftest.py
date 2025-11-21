@@ -17,4 +17,3 @@ def sample_filters():
         ["project", "is", {"type": "Project", "id": 123}],
         ["created_at", "in_last", [7, "DAY"]],
     ]
-
