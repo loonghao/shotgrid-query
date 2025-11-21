@@ -62,6 +62,16 @@ from shotgrid_query.models import (
     TimeFilter,
     TimeUnit as TimeUnitEnum,
 )
+from shotgrid_query.query import Query, QueryBuilder
+from shotgrid_query.field_mapper import FieldMapper
+from shotgrid_query.adapters import BaseAdapter
+
+# Try to import optional adapters
+try:
+    from shotgrid_query.adapters import PythonAPIAdapter
+    _has_python_api = True
+except ImportError:
+    _has_python_api = False
 
 # Public API exports
 __all__ = [
@@ -112,5 +122,17 @@ __all__ = [
     "FilterRequest",
     "TimeFilter",
     "TimeUnitEnum",
+    # Query Builder
+    "Query",
+    "QueryBuilder",
+    # Field Mapper
+    "FieldMapper",
+    # Adapters
+    "BaseAdapter",
 ]
+
+# Add PythonAPIAdapter to __all__ if available
+if _has_python_api:
+    from shotgrid_query.adapters import PythonAPIAdapter
+    __all__.append("PythonAPIAdapter")
 
