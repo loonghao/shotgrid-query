@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type conversion utilities
 - Support for shotgun_api3 integration
 
+## v0.2.1 (2025-11-21)
+
+### Fix
+
+- **ci**: ensure PAT_TOKEN is used consistently in bump-version workflow
+- **ci**: ensure bump-version workflow triggers publish workflow
+
 ## v0.2.0 (2025-11-21)
 
 ### Feat
