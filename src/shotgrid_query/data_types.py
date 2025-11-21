@@ -112,7 +112,7 @@ def convert_to_shotgrid_type(value: Any, sg_type: str) -> Any:
 
     # Get the appropriate converter function
     converter = type_converters.get(sg_type)
-    if converter:
+    if converter and callable(converter):
         return converter(value)
 
     # Default: return as is
@@ -212,7 +212,7 @@ def get_field_type(schema: dict[str, Any], entity_type: str, field_name: str) ->
     if not field_schema:
         return None
 
-    data_type = field_schema.get("data_type", {}).get("value")
+    data_type: str | None = field_schema.get("data_type", {}).get("value")
     return data_type
 
 
@@ -264,7 +264,7 @@ def get_entity_field_types(schema: dict[str, Any], entity_type: str, field_name:
 
     field_schema = schema[entity_type]["fields"].get(field_name, {})
     properties = field_schema.get("properties", {})
-    valid_types = properties.get("valid_types", {}).get("value", [])
+    valid_types: list[str] = properties.get("valid_types", {}).get("value", [])
 
     return valid_types
 

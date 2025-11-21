@@ -38,6 +38,6 @@ repos:
         additional_dependencies:
           - pydantic>=2.0.0
           - types-requests
-        args: [--ignore-missing-imports, --no-strict-optional]
-        exclude: ^(tests/|noxfile.py)
+        args: [--ignore-missing-imports]
+        files: ^src/shotgrid_query/.*\.py$
 

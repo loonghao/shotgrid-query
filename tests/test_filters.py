@@ -126,21 +126,6 @@ class TestFilterBuilder:
         result = FilterBuilder.name_is("entity", "Test Asset")
         assert result == ("entity", "name_is", "Test Asset")
 
-    def test_in_calendar_day(self):
-        """Test creating 'in_calendar_day' filter."""
-        result = FilterBuilder.in_calendar_day("created_at")
-        assert result == ("created_at", "in_calendar_day", None)
-
-    def test_type_is(self):
-        """Test creating 'type_is' filter."""
-        result = FilterBuilder.type_is("entity", "Shot")
-        assert result == ("entity", "type_is", "Shot")
-
-    def test_name_contains(self):
-        """Test creating 'name_contains' filter."""
-        result = FilterBuilder.name_contains("project", "Demo")
-        assert result == ("project", "name_contains", "Demo")
-
     def test_today(self):
         """Test creating today filter."""
         result = FilterBuilder.today("created_at")

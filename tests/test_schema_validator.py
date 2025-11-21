@@ -3,8 +3,6 @@
 import time
 from unittest.mock import MagicMock
 
-import pytest
-
 from shotgrid_query.constants import (
     DATA_TYPE_DATE,
     DATA_TYPE_ENTITY,
@@ -13,7 +11,6 @@ from shotgrid_query.constants import (
     DEFAULT_SCHEMA_CACHE_TTL,
     OP_CONTAINS,
     OP_GREATER_THAN,
-    OP_IN,
     OP_IN_LAST,
     OP_IS,
 )

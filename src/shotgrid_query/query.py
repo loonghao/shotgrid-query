@@ -459,7 +459,8 @@ class QueryBuilder:
             kwargs,
         )
 
-        return sg.find(self._entity_type, filters, fields, **kwargs)
+        result: list[dict[str, Any]] = sg.find(self._entity_type, filters, fields, **kwargs)
+        return result
 
     def first(self, sg: Any) -> dict[str, Any] | None:
         """Execute the query and return the first result.
@@ -504,7 +505,8 @@ class QueryBuilder:
         )
 
         if summary and "summaries" in summary and summary["summaries"]:
-            return summary["summaries"]["id"]
+            count: int = summary["summaries"]["id"]
+            return count
 
         return 0
 
