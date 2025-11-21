@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type conversion utilities
 - Support for shotgun_api3 integration
 
+## v0.3.0 (2025-11-21)
+
+### Feat
+
+- **types**: add complete ShotGrid field type support
+
+### Fix
+
+- **ci**: handle missing previous release in changelog generation
+
 ## v0.2.1 (2025-11-21)
 
 ### Fix
