@@ -5,10 +5,10 @@ with a Pythonic, intuitive API.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from shotgrid_query.custom_types import EntityType, Filter
-from shotgrid_query.filters import FilterBuilder, process_filters
+from shotgrid_query.filters import process_filters
 
 logger = logging.getLogger(__name__)
 
@@ -34,13 +34,13 @@ class QueryBuilder:
             entity_type: The ShotGrid entity type to query (e.g., "Shot", "Asset", "Task")
         """
         self._entity_type = entity_type
-        self._filters: List[Filter] = []
-        self._fields: List[str] = []
-        self._order: List[Dict[str, str]] = []
-        self._limit: Optional[int] = None
+        self._filters: list[Filter] = []
+        self._fields: list[str] = []
+        self._order: list[dict[str, str]] = []
+        self._limit: int | None = None
         self._retired_only: bool = False
         self._include_archived_projects: bool = True
-        self._additional_filter_presets: Optional[List[Dict[str, Any]]] = None
+        self._additional_filter_presets: list[dict[str, Any]] | None = None
         self._filter_operator: str = "all"  # "all" (AND) or "any" (OR)
 
     def filter(self, **kwargs: Any) -> "QueryBuilder":
@@ -128,7 +128,7 @@ class QueryBuilder:
         self._fields.extend(fields)
         return self
 
-    def select_related(self, field: str, fields: Optional[List[str]] = None) -> "QueryBuilder":
+    def select_related(self, field: str, fields: list[str] | None = None) -> "QueryBuilder":
         """Select related entity fields using dot notation.
 
         Args:
@@ -245,7 +245,7 @@ class QueryBuilder:
         self._filter_operator = operator
         return self
 
-    def to_filters(self) -> List[Filter]:
+    def to_filters(self) -> list[Filter]:
         """Convert the query to ShotGrid filter format.
 
         Returns:
@@ -260,7 +260,7 @@ class QueryBuilder:
             return process_filters(self._filters)
         return []
 
-    def to_fields(self) -> List[str]:
+    def to_fields(self) -> list[str]:
         """Get the list of fields to select.
 
         Returns:
@@ -272,7 +272,7 @@ class QueryBuilder:
         """
         return self._fields.copy()
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert the query to a dictionary suitable for ShotGrid API.
 
         Returns:
@@ -287,7 +287,7 @@ class QueryBuilder:
             >>> #     "limit": 100
             >>> # }
         """
-        result: Dict[str, Any] = {
+        result: dict[str, Any] = {
             "entity_type": self._entity_type,
         }
 
@@ -317,7 +317,7 @@ class QueryBuilder:
 
         return result
 
-    def execute(self, sg: Any) -> List[Dict[str, Any]]:
+    def execute(self, sg: Any) -> list[dict[str, Any]]:
         """Execute the query using a ShotGrid connection.
 
         Args:
@@ -335,7 +335,7 @@ class QueryBuilder:
         fields = self.to_fields() if self._fields else None
 
         # Build kwargs for sg.find()
-        kwargs: Dict[str, Any] = {}
+        kwargs: dict[str, Any] = {}
 
         if self._order:
             kwargs["order"] = self._order
@@ -365,7 +365,7 @@ class QueryBuilder:
 
         return sg.find(self._entity_type, filters, fields, **kwargs)
 
-    def first(self, sg: Any) -> Optional[Dict[str, Any]]:
+    def first(self, sg: Any) -> dict[str, Any] | None:
         """Execute the query and return the first result.
 
         Args:
@@ -463,4 +463,3 @@ class QueryBuilder:
 
 # Convenience alias
 Query = QueryBuilder
-

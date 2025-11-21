@@ -5,7 +5,6 @@ especially for related entity fields using dot notation.
 """
 
 import logging
-from typing import Dict, List, Optional, Set
 
 from shotgrid_query.custom_types import EntityType
 
@@ -21,7 +20,7 @@ class FieldMapper:
     3. Managing field dependencies and relationships
     """
 
-    def __init__(self, entity_type: EntityType, schema: Optional[Dict] = None):
+    def __init__(self, entity_type: EntityType, schema: dict | None = None):
         """Initialize the field mapper.
 
         Args:
@@ -30,7 +29,7 @@ class FieldMapper:
         """
         self._entity_type = entity_type
         self._schema = schema or {}
-        self._field_cache: Dict[str, str] = {}
+        self._field_cache: dict[str, str] = {}
 
     def resolve_field(self, field: str) -> str:
         """Resolve a field path to ShotGrid's format.
@@ -79,8 +78,7 @@ class FieldMapper:
             else:
                 # If we can't resolve, return as-is and log a warning
                 logger.warning(
-                    "Could not resolve entity type for field %s on %s. "
-                    "Returning as-is. Consider providing a schema.",
+                    "Could not resolve entity type for field %s on %s. Returning as-is. Consider providing a schema.",
                     relationship_field,
                     self._entity_type,
                 )
@@ -91,7 +89,7 @@ class FieldMapper:
         self._field_cache[field] = field
         return field
 
-    def resolve_fields(self, fields: List[str]) -> List[str]:
+    def resolve_fields(self, fields: list[str]) -> list[str]:
         """Resolve multiple field paths.
 
         Args:
@@ -102,7 +100,7 @@ class FieldMapper:
         """
         return [self.resolve_field(field) for field in fields]
 
-    def _get_related_entity_type(self, field: str) -> Optional[str]:
+    def _get_related_entity_type(self, field: str) -> str | None:
         """Get the entity type for a related field.
 
         Args:
@@ -140,7 +138,7 @@ class FieldMapper:
 
         return None
 
-    def get_related_fields(self, relationship_field: str, fields: List[str]) -> List[str]:
+    def get_related_fields(self, relationship_field: str, fields: list[str]) -> list[str]:
         """Get fully qualified field paths for related entity fields.
 
         Args:
@@ -156,12 +154,9 @@ class FieldMapper:
             return [f"{relationship_field}.{entity_type}.{field}" for field in fields]
         else:
             # Fallback: return simplified format
-            logger.warning(
-                "Could not determine entity type for %s. Using simplified format.", relationship_field
-            )
+            logger.warning("Could not determine entity type for %s. Using simplified format.", relationship_field)
             return [f"{relationship_field}.{field}" for field in fields]
 
     def clear_cache(self) -> None:
         """Clear the field resolution cache."""
         self._field_cache.clear()
-

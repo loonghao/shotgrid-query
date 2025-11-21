@@ -4,7 +4,7 @@ This module provides an adapter for the official shotgun_api3 Python library.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from shotgrid_query.adapters.base import BaseAdapter
 from shotgrid_query.custom_types import EntityType, Filter
@@ -30,15 +30,15 @@ class PythonAPIAdapter(BaseAdapter):
     def find(
         self,
         entity_type: EntityType,
-        filters: List[Filter],
-        fields: Optional[List[str]] = None,
-        order: Optional[List[Dict[str, str]]] = None,
-        limit: Optional[int] = None,
+        filters: list[Filter],
+        fields: list[str] | None = None,
+        order: list[dict[str, str]] | None = None,
+        limit: int | None = None,
         retired_only: bool = False,
         include_archived_projects: bool = True,
         filter_operator: str = "all",
         **kwargs: Any,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Find entities using shotgun_api3.
 
         Args:
@@ -56,7 +56,7 @@ class PythonAPIAdapter(BaseAdapter):
             List of entities matching the criteria
         """
         # Build kwargs for sg.find()
-        find_kwargs: Dict[str, Any] = {}
+        find_kwargs: dict[str, Any] = {}
 
         if order is not None:
             find_kwargs["order"] = order
@@ -89,13 +89,13 @@ class PythonAPIAdapter(BaseAdapter):
     def find_one(
         self,
         entity_type: EntityType,
-        filters: List[Filter],
-        fields: Optional[List[str]] = None,
-        order: Optional[List[Dict[str, str]]] = None,
+        filters: list[Filter],
+        fields: list[str] | None = None,
+        order: list[dict[str, str]] | None = None,
         filter_operator: str = "all",
         retired_only: bool = False,
         **kwargs: Any,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """Find a single entity using shotgun_api3.
 
         Args:
@@ -111,7 +111,7 @@ class PythonAPIAdapter(BaseAdapter):
             First entity matching the criteria, or None if not found
         """
         # Build kwargs for sg.find_one()
-        find_kwargs: Dict[str, Any] = {}
+        find_kwargs: dict[str, Any] = {}
 
         if order is not None:
             find_kwargs["order"] = order
@@ -138,9 +138,9 @@ class PythonAPIAdapter(BaseAdapter):
     def create(
         self,
         entity_type: EntityType,
-        data: Dict[str, Any],
-        return_fields: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        data: dict[str, Any],
+        return_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Create a new entity using shotgun_api3.
 
         Args:
@@ -159,9 +159,9 @@ class PythonAPIAdapter(BaseAdapter):
         self,
         entity_type: EntityType,
         entity_id: int,
-        data: Dict[str, Any],
-        return_fields: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        data: dict[str, Any],
+        return_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Update an existing entity using shotgun_api3.
 
         Args:
@@ -198,9 +198,7 @@ class PythonAPIAdapter(BaseAdapter):
         result = self._sg.delete(entity_type, entity_id)
         return result is True
 
-    def schema_field_read(
-        self, entity_type: EntityType, field_name: Optional[str] = None
-    ) -> Dict[str, Any]:
+    def schema_field_read(self, entity_type: EntityType, field_name: str | None = None) -> dict[str, Any]:
         """Read schema information for entity fields using shotgun_api3.
 
         Args:
@@ -214,7 +212,7 @@ class PythonAPIAdapter(BaseAdapter):
 
         return self._sg.schema_field_read(entity_type, field_name)
 
-    def schema_entity_read(self) -> Dict[str, Any]:
+    def schema_entity_read(self) -> dict[str, Any]:
         """Read schema information for all entity types using shotgun_api3.
 
         Returns:
@@ -232,4 +230,3 @@ class PythonAPIAdapter(BaseAdapter):
             The Shotgun instance
         """
         return self._sg
-

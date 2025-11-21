@@ -13,4 +13,3 @@ try:
 except ImportError:
     # shotgun_api3 not installed
     __all__ = ["BaseAdapter"]
-

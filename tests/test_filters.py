@@ -1,14 +1,15 @@
 """Tests for filter building and validation."""
 
-import pytest
 from datetime import datetime, timedelta
+
+import pytest
 
 from shotgrid_query.filters import (
     FilterBuilder,
-    validate_filters,
-    process_filters,
     build_date_filter,
     combine_filters,
+    process_filters,
+    validate_filters,
 )
 
 
@@ -260,4 +261,3 @@ class TestCombineFilters:
         filters = [("code", "is", "SHOT_010")]
         with pytest.raises(ValueError, match="Invalid filter operator"):
             combine_filters(filters, "invalid")
-

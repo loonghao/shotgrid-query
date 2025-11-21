@@ -13,6 +13,7 @@ Example:
 __version__ = "0.1.0"
 
 # Import core components
+from shotgrid_query.adapters import BaseAdapter
 from shotgrid_query.custom_types import (
     ASSET_ENTITY_TYPE,
     GROUP_ENTITY_TYPE,
@@ -45,6 +46,7 @@ from shotgrid_query.data_types import (
     is_entity_field,
     is_multi_entity_field,
 )
+from shotgrid_query.field_mapper import FieldMapper
 from shotgrid_query.filters import (
     FilterBuilder,
     TimeUnit,
@@ -56,19 +58,26 @@ from shotgrid_query.filters import (
 )
 from shotgrid_query.models import (
     EntityRef as EntityRefModel,
+)
+from shotgrid_query.models import (
     Filter as FilterModel,
+)
+from shotgrid_query.models import (
     FilterOperator as FilterOperatorEnum,
+)
+from shotgrid_query.models import (
     FilterRequest,
     TimeFilter,
+)
+from shotgrid_query.models import (
     TimeUnit as TimeUnitEnum,
 )
 from shotgrid_query.query import Query, QueryBuilder
-from shotgrid_query.field_mapper import FieldMapper
-from shotgrid_query.adapters import BaseAdapter
 
 # Try to import optional adapters
 try:
     from shotgrid_query.adapters import PythonAPIAdapter
+
     _has_python_api = True
 except ImportError:
     _has_python_api = False
@@ -134,5 +143,5 @@ __all__ = [
 # Add PythonAPIAdapter to __all__ if available
 if _has_python_api:
     from shotgrid_query.adapters import PythonAPIAdapter
-    __all__.append("PythonAPIAdapter")
 
+    __all__.append("PythonAPIAdapter")

@@ -6,7 +6,7 @@ making it easier to create, validate, and process filters for API queries.
 
 import logging
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any
 
 from shotgrid_query.custom_types import Filter
 
@@ -145,7 +145,7 @@ class FilterBuilder:
         return (field, "between", [min_value, max_value])
 
     @staticmethod
-    def in_list(field: str, values: List[Any]) -> Filter:
+    def in_list(field: str, values: list[Any]) -> Filter:
         """Create an 'in' filter.
 
         Args:
@@ -158,7 +158,7 @@ class FilterBuilder:
         return (field, "in", values)
 
     @staticmethod
-    def not_in_list(field: str, values: List[Any]) -> Filter:
+    def not_in_list(field: str, values: list[Any]) -> Filter:
         """Create a 'not_in' filter.
 
         Args:
@@ -384,7 +384,7 @@ class FilterBuilder:
         return ("task_assignees", "is", {"type": "HumanUser", "id": user_id})
 
 
-def _validate_filter_structure(filter_item: Any, index: int) -> List[str]:
+def _validate_filter_structure(filter_item: Any, index: int) -> list[str]:
     """Validate the basic structure of a filter.
 
     Args:
@@ -402,7 +402,7 @@ def _validate_filter_structure(filter_item: Any, index: int) -> List[str]:
     return errors
 
 
-def _validate_filter_field(field: Any, index: int) -> List[str]:
+def _validate_filter_field(field: Any, index: int) -> list[str]:
     """Validate the field part of a filter.
 
     Args:
@@ -420,7 +420,7 @@ def _validate_filter_field(field: Any, index: int) -> List[str]:
     return errors
 
 
-def _validate_filter_operator(operator: Any, index: int) -> List[str]:
+def _validate_filter_operator(operator: Any, index: int) -> list[str]:
     """Validate the operator part of a filter.
 
     Args:
@@ -468,7 +468,7 @@ def _validate_filter_operator(operator: Any, index: int) -> List[str]:
     return errors
 
 
-def _validate_time_filter_value(value: Any, index: int) -> List[str]:
+def _validate_time_filter_value(value: Any, index: int) -> list[str]:
     """Validate a time filter value.
 
     Args:
@@ -527,7 +527,7 @@ def _validate_time_filter_value(value: Any, index: int) -> List[str]:
     return errors
 
 
-def _validate_between_filter_value(value: Any, index: int) -> List[str]:
+def _validate_between_filter_value(value: Any, index: int) -> list[str]:
     """Validate a between filter value.
 
     Args:
@@ -545,7 +545,7 @@ def _validate_between_filter_value(value: Any, index: int) -> List[str]:
     return errors
 
 
-def validate_filters(filters: List[Filter]) -> List[str]:
+def validate_filters(filters: list[Filter]) -> list[str]:
     """Validate filter format and values.
 
     Args:
@@ -715,7 +715,7 @@ def _process_special_date_value(value: Any) -> Any:
     return value
 
 
-def process_filters(filters: List[Filter]) -> List[Tuple[str, str, Any]]:
+def process_filters(filters: list[Filter]) -> list[tuple[str, str, Any]]:
     """Process filters to handle special values and time-related filters.
 
     This function enhances filter processing by:
@@ -754,7 +754,7 @@ def process_filters(filters: List[Filter]) -> List[Tuple[str, str, Any]]:
     return processed_filters
 
 
-def create_date_filter(field: str, operator: str, date_value: Union[str, datetime, timedelta]) -> Filter:
+def create_date_filter(field: str, operator: str, date_value: str | datetime | timedelta) -> Filter:
     """Create a date filter with proper formatting.
 
     Args:
@@ -777,9 +777,7 @@ def create_date_filter(field: str, operator: str, date_value: Union[str, datetim
     return (field, operator, date_value)
 
 
-def build_date_filter(
-    field: str, operator: str, date_value: Union[str, datetime, date, timedelta, None] = None
-) -> Filter:
+def build_date_filter(field: str, operator: str, date_value: str | datetime | date | timedelta | None = None) -> Filter:
     """Build a date filter with proper formatting.
 
     This function handles various date formats and special values:
@@ -826,7 +824,7 @@ def build_date_filter(
     return (field, operator, formatted_date)
 
 
-def combine_filters(filters: List[Filter], operator: str = "and") -> Dict[str, Any]:
+def combine_filters(filters: list[Filter], operator: str = "and") -> dict[str, Any]:
     """Combine multiple filters with a logical operator.
 
     Args:
@@ -843,4 +841,3 @@ def combine_filters(filters: List[Filter], operator: str = "and") -> Dict[str, A
         raise ValueError(f"Invalid filter operator: {operator}. Must be 'and' or 'or'")
 
     return {"filters": process_filters(filters), "filter_operator": operator}
-

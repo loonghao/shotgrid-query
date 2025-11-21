@@ -4,11 +4,10 @@ This module provides Pydantic models for ShotGrid API data types and filters.
 """
 
 import logging
-from datetime import date, datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class TimeUnit(str, Enum):
@@ -53,12 +52,11 @@ class FilterOperator(str, Enum):
 class EntityRef(BaseModel):
     """ShotGrid entity reference."""
 
+    model_config = ConfigDict(extra="allow")
+
     type: str
     id: int
-    name: Optional[str] = None
-
-    class Config:
-        extra = "allow"  # Allow extra fields
+    name: str | None = None
 
 
 class Filter(BaseModel):
@@ -99,12 +97,12 @@ class Filter(BaseModel):
 
         return self
 
-    def to_tuple(self) -> Tuple[str, str, Any]:
+    def to_tuple(self) -> tuple[str, str, Any]:
         """Convert to tuple format for ShotGrid API."""
         return (self.field, self.operator.value, self.value)
 
     @classmethod
-    def from_tuple(cls, filter_tuple: Tuple[str, str, Any]) -> "Filter":
+    def from_tuple(cls, filter_tuple: tuple[str, str, Any]) -> "Filter":
         """Create from tuple format."""
         field, operator, value = filter_tuple
         return cls(field=field, operator=operator, value=value)
@@ -132,7 +130,7 @@ class FilterRequest(BaseModel):
             return Filter(field=self.field, operator=self.operator, value=self.value)  # type: ignore
 
     @classmethod
-    def from_dict(cls, filter_dict: Dict[str, Any]) -> "FilterRequest":
+    def from_dict(cls, filter_dict: dict[str, Any]) -> "FilterRequest":
         """Create from dictionary."""
         return cls(field=filter_dict.get("field"), operator=filter_dict.get("operator"), value=filter_dict.get("value"))
 
@@ -152,4 +150,3 @@ class TimeFilter(BaseModel):
             operator=self.operator,  # type: ignore
             value=[self.count, self.unit.value],
         )
-
