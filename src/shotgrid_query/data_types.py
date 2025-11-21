@@ -29,6 +29,7 @@ class ShotGridTypes:
     PERCENT = "percent"
     SERIALIZABLE = "serializable"
     STATUS_LIST = "status_list"
+    SYSTEM_TASK_TYPE = "system_task_type"
     TAG_LIST = "tag_list"
     TEXT = "text"
     TIMECODE = "timecode"

@@ -143,6 +143,7 @@ jobs:
     - name: Generate changelog
       id: changelog
       uses: jaywcjlove/changelog-generator@main
+      continue-on-error: true
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         filter-author: (|dependabot|renovate\[bot\]|dependabot\[bot\]|Renovate Bot)
@@ -163,13 +164,20 @@ jobs:
           ## Unknown
           {{__unknown__}}
 
+    - name: Set default changelog if generation failed
+      id: set_changelog
+      if: steps.changelog.outcome == 'failure'
+      run: |
+        echo "changelog=## What's Changed\n\nThis is the first release of ShotGrid Query Builder.\n\nA Pythonic query builder and ORM-like abstraction layer for ShotGrid/Flow Production Tracking API.\n\nSee the full commit history for details." >> $GITHUB_OUTPUT
+        echo "compareurl=${{ github.server_url }}/${{ github.repository }}/commits/v${{ steps.get_tag_name.outputs.version }}" >> $GITHUB_OUTPUT
+
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
         artifacts: "dist/*"
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          Comparing Changes: ${{ steps.changelog.outputs.compareurl }}
+          Comparing Changes: ${{ steps.changelog.outputs.compareurl || steps.set_changelog.outputs.compareurl }}
 
-          ${{ steps.changelog.outputs.changelog }}
+          ${{ steps.changelog.outputs.changelog || steps.set_changelog.outputs.changelog }}
 
