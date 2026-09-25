@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type conversion utilities
 - Support for shotgun_api3 integration
 
+## [0.3.1](https://github.com/loonghao/shotgrid-query/compare/v0.3.0...v0.3.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* **ci:** fall back to GITHUB_TOKEN for release-please ([#24](https://github.com/loonghao/shotgrid-query/issues/24)) ([f3d5950](https://github.com/loonghao/shotgrid-query/commit/f3d5950c1b9277e648ff677aa79a062d1c9a78d6))
+
 ## v0.3.0 (2025-11-21)
 
 ### Feat
