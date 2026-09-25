@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "shotgrid-query"
-version = "0.3.0"
+version = "0.3.1"
 description = "A Pythonic query builder and ORM-like abstraction layer for ShotGrid/Flow Production Tracking API"
 readme = "README.md"
 requires-python = ">=3.10"
