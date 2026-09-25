@@ -10,7 +10,7 @@ Example:
     >>> filters = query.to_filters()
 """
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"  # x-release-please-version
 
 # Import core components
 # Import constants for public API
